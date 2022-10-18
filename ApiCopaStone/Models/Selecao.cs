@@ -7,7 +7,7 @@ namespace ApiCopaStone.Models
     public class Selecao
     {
         [Key]
-        public int Id { get; set; }
+        public int SelecaoId { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório")]
         [MaxLength(20)]

@@ -6,7 +6,7 @@ namespace ApiCopaStone.Models
     public class Admin
     {
         [Key]
-        public int Id { get; set; }
+        public int AdminId { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório")]
         [MaxLength(20)]

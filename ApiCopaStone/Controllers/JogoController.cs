@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiCopaStone.Data;
 using ApiCopaStone.Models;
+using System.Linq;
 
 namespace ApiCopaStone.Controllers
 {
     [Route("jogo")]
     public class JogoController : ControllerBase
     {
+    
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Jogo>>> PegaJogos(
@@ -17,7 +19,8 @@ namespace ApiCopaStone.Controllers
         )
         {
             var jogo = await context
-                .Jogos      
+                .Jogos
+                .Include(x => x.FaseCopa)
                 .AsNoTracking()
                 .ToListAsync();
             return Ok(jogo);
@@ -31,15 +34,44 @@ namespace ApiCopaStone.Controllers
         {
             var jogo = await context
                 .Jogos
+                .Include(x => x.FaseCopa)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.JogoId == id);
 
             return Ok(jogo);
         }
+
+        [HttpGet] //jogos/fasecopa/id da fase
+        [Route("fasecopa/{id:int}")]
+        public async Task<ActionResult<List<Jogo>>> TodosJogoByFaseCopaId(
+           int id,
+           [FromServices] DataContext context
+       )
+        {
+            var jogos = await context
+                .Jogos
+                .Include(x => x.FaseCopa)
+                //.Include(x => x.SelecaoAId)
+                .AsNoTracking()
+                .Where(x => x.FaseCopaId == id)
+                //.Where(x => x.SelecaoAId == id)
+                .ToListAsync();
+
+            return Ok(jogos);
+        }
+
+
+
+
+
+
+
+
+
         //1:49 Se quisermos fazer um filtro
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult<List<Jogo>>> CriaJogo(
+        public async Task<ActionResult<Jogo>> CriaJogo(
             [FromServices] DataContext context,
             [FromBody] Jogo model
         )
@@ -66,7 +98,7 @@ namespace ApiCopaStone.Controllers
            [FromServices] DataContext context
        )
         {
-            if (id != model.Id)
+            if (id != model.JogoId)
             {
                 return NotFound(new { message = "Jogo não encontrado" });
             }
@@ -98,7 +130,7 @@ namespace ApiCopaStone.Controllers
             [FromServices] DataContext context
         )
         {
-            var jogo = await context.Jogos.FirstOrDefaultAsync(x => x.Id == id);
+            var jogo = await context.Jogos.FirstOrDefaultAsync(x => x.JogoId == id);
             {
                 if (jogo == null)
                 {

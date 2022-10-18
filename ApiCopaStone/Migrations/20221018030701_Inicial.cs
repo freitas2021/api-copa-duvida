@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApiCopaStone.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace ApiCopaStone.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -26,7 +26,7 @@ namespace ApiCopaStone.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.PrimaryKey("PK_Admins", x => x.AdminId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -34,14 +34,14 @@ namespace ApiCopaStone.Migrations
                 name: "FaseCopas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    FaseCopaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FaseCopas", x => x.Id);
+                    table.PrimaryKey("PK_FaseCopas", x => x.FaseCopaId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -49,7 +49,7 @@ namespace ApiCopaStone.Migrations
                 name: "Selecaos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    SelecaoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -60,7 +60,7 @@ namespace ApiCopaStone.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Selecaos", x => x.Id);
+                    table.PrimaryKey("PK_Selecaos", x => x.SelecaoId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -68,42 +68,43 @@ namespace ApiCopaStone.Migrations
                 name: "Jogos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    JogoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SelecaoId = table.Column<int>(type: "int", nullable: true),
                     SelecaoAId = table.Column<int>(type: "int", nullable: false),
                     SelecaoBId = table.Column<int>(type: "int", nullable: false),
                     GolsSelecaoA = table.Column<int>(type: "int", nullable: false),
                     GolsSelecaoB = table.Column<int>(type: "int", nullable: false),
-                    InicioJogo = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    jogo = table.Column<int>(type: "int", nullable: true)
+                    FaseCopaId = table.Column<int>(type: "int", nullable: false),
+                    InicioJogo = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Jogos", x => x.Id);
+                    table.PrimaryKey("PK_Jogos", x => x.JogoId);
                     table.ForeignKey(
-                        name: "FK_Jogos_FaseCopas_jogo",
-                        column: x => x.jogo,
+                        name: "FK_Jogos_FaseCopas_FaseCopaId",
+                        column: x => x.FaseCopaId,
                         principalTable: "FaseCopas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Jogos_Selecaos_SelecaoAId",
-                        column: x => x.SelecaoAId,
-                        principalTable: "Selecaos",
-                        principalColumn: "Id",
+                        principalColumn: "FaseCopaId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Jogos_Selecaos_SelecaoId",
+                        column: x => x.SelecaoId,
+                        principalTable: "Selecaos",
+                        principalColumn: "SelecaoId",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jogos_jogo",
+                name: "IX_Jogos_FaseCopaId",
                 table: "Jogos",
-                column: "jogo");
+                column: "FaseCopaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jogos_SelecaoAId",
+                name: "IX_Jogos_SelecaoId",
                 table: "Jogos",
-                column: "SelecaoAId");
+                column: "SelecaoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

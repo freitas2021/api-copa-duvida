@@ -28,7 +28,7 @@ namespace ApiCopaStone.Controllers
             [FromServices] DataContext context
         )
         {
-            var admins = await context.Admins.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var admins = await context.Admins.AsNoTracking().FirstOrDefaultAsync(x => x.AdminId == id);
             return Ok(admins);                
         }
 
@@ -64,7 +64,7 @@ namespace ApiCopaStone.Controllers
             [FromServices]DataContext context
         )
         {
-            if (id != model.Id)
+            if (id != model.AdminId)
             {
                 return NotFound(new { message = "Administrador não encontrado" });
             }
@@ -96,7 +96,7 @@ namespace ApiCopaStone.Controllers
             [FromServices]DataContext context
         )
         {
-            var admin = await context.Admins.FirstOrDefaultAsync(x => x.Id == id);
+            var admin = await context.Admins.FirstOrDefaultAsync(x => x.AdminId == id);
             {
                 if (admin == null)
                 {

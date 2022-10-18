@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCopaStone.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221015230542_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221018030701_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace ApiCopaStone.Migrations
 
             modelBuilder.Entity("ApiCopaStone.Models.Admin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AdminId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -40,31 +40,32 @@ namespace ApiCopaStone.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.HasKey("Id");
+                    b.HasKey("AdminId");
 
                     b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("ApiCopaStone.Models.FaseCopa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FaseCopaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("FaseCopaId");
 
                     b.ToTable("FaseCopas");
                 });
 
             modelBuilder.Entity("ApiCopaStone.Models.Jogo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("JogoId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("FaseCopaId")
                         .HasColumnType("int");
 
                     b.Property<int>("GolsSelecaoA")
@@ -82,21 +83,21 @@ namespace ApiCopaStone.Migrations
                     b.Property<int>("SelecaoBId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("jogo")
+                    b.Property<int?>("SelecaoId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("JogoId");
 
-                    b.HasIndex("SelecaoAId");
+                    b.HasIndex("FaseCopaId");
 
-                    b.HasIndex("jogo");
+                    b.HasIndex("SelecaoId");
 
                     b.ToTable("Jogos");
                 });
 
             modelBuilder.Entity("ApiCopaStone.Models.Selecao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SelecaoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -115,29 +116,26 @@ namespace ApiCopaStone.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SelecaoId");
 
                     b.ToTable("Selecaos");
                 });
 
             modelBuilder.Entity("ApiCopaStone.Models.Jogo", b =>
                 {
-                    b.HasOne("ApiCopaStone.Models.Selecao", "Selecao")
+                    b.HasOne("ApiCopaStone.Models.FaseCopa", "FaseCopa")
                         .WithMany()
-                        .HasForeignKey("SelecaoAId")
+                        .HasForeignKey("FaseCopaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApiCopaStone.Models.FaseCopa", null)
-                        .WithMany("Jogos")
-                        .HasForeignKey("jogo");
+                    b.HasOne("ApiCopaStone.Models.Selecao", "Selecao")
+                        .WithMany()
+                        .HasForeignKey("SelecaoId");
+
+                    b.Navigation("FaseCopa");
 
                     b.Navigation("Selecao");
-                });
-
-            modelBuilder.Entity("ApiCopaStone.Models.FaseCopa", b =>
-                {
-                    b.Navigation("Jogos");
                 });
 #pragma warning restore 612, 618
         }

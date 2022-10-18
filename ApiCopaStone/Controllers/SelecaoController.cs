@@ -33,7 +33,7 @@ namespace ApiCopaStone.Models
             var selecao = await context
                 .Selecaos
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.SelecaoId == id);
                 
             return Ok(selecao);              
         }

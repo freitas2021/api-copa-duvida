@@ -34,10 +34,13 @@ namespace WepApiBalta.Controllers
                 .FaseCopas
                 //.Include(x => x.o que queremos incluir na consulta)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.FaseCopaId == id);
 
             return Ok(faseCopa);
         }
+        //[HttpGet]
+        //[Route("FaseCopa/jogos")]
+        //public async Task<ActionResult<FaseCopa. >>
         //1:49 Se quisermos fazer um filtro
         [HttpPost]
         [Route("")]
@@ -68,7 +71,7 @@ namespace WepApiBalta.Controllers
            [FromServices] DataContext context
        )
         {
-            if (id != model.Id)
+            if (id != model.FaseCopaId)
             {
                 return NotFound(new { message = "Fase da copa não encontrada" });
             }
@@ -100,7 +103,7 @@ namespace WepApiBalta.Controllers
             [FromServices] DataContext context
         )
         {
-            var faseCopa = await context.FaseCopas.FirstOrDefaultAsync(x => x.Id == id);
+            var faseCopa = await context.FaseCopas.FirstOrDefaultAsync(x => x.FaseCopaId == id);
             {
                 if (faseCopa == null)
                 {
