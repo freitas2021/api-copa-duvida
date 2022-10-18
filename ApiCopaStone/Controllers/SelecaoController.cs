@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiCopaStone.Data;
-using ApiCopaStone.Models;
+
 
 namespace ApiCopaStone.Models
 
@@ -57,9 +57,7 @@ namespace ApiCopaStone.Models
             }
 
         
-        }
-    
-
+        }    
 
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ApiCopaStone.Models
 
@@ -22,4 +21,3 @@ namespace ApiCopaStone.Models
         public string UrlImagemBandeira { get; set; }
     }
 }
-//rever video 4- criando uma api data driven...1:55

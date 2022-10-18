@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiCopaStone.Data;
 using ApiCopaStone.Models;
-//1:00 hora
+
 namespace ApiCopaStone.Controllers
 {
 
@@ -87,7 +87,6 @@ namespace ApiCopaStone.Controllers
                 return BadRequest(new { message = "Não Foi possível atualizar o Administrador"});
             }
         }
-
 
         [HttpDelete]
         [Route("{id:int}")]

@@ -25,6 +25,7 @@ namespace ApiCopaStone.Controllers
                 .ToListAsync();
             return Ok(jogo);
         }
+
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<Jogo>> PegaJogoById(
@@ -51,24 +52,13 @@ namespace ApiCopaStone.Controllers
             var jogos = await context
                 .Jogos
                 .Include(x => x.FaseCopa)
-                //.Include(x => x.SelecaoAId)
                 .AsNoTracking()
                 .Where(x => x.FaseCopaId == id)
-                //.Where(x => x.SelecaoAId == id)
                 .ToListAsync();
 
             return Ok(jogos);
         }
 
-
-
-
-
-
-
-
-
-        //1:49 Se quisermos fazer um filtro
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Jogo>> CriaJogo(
@@ -88,7 +78,6 @@ namespace ApiCopaStone.Controllers
             }
 
         }
-
 
         [HttpPut]
         [Route("{id:int}")]
@@ -121,7 +110,6 @@ namespace ApiCopaStone.Controllers
                 return BadRequest(new { message = "Não Foi possível atualizar o jogo" });
             }
         }
-
 
         [HttpDelete]
         [Route("{id:int}")]

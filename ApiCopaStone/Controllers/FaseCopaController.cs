@@ -18,7 +18,6 @@ namespace WepApiBalta.Controllers
         {
             var faseCopa = await context
                 .FaseCopas
-                //.Include(x => x.o que queremos incluir na consulta)
                 .AsNoTracking()
                 .ToListAsync();
             return Ok(faseCopa);
@@ -32,17 +31,12 @@ namespace WepApiBalta.Controllers
         {
             var faseCopa = await context
                 .FaseCopas
-                //.Include(x => x.o que queremos incluir na consulta)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.FaseCopaId == id);
 
             return Ok(faseCopa);
         }
-        //[HttpGet]
-        //[Route("FaseCopa/jogos")]
-        //public async Task<ActionResult<FaseCopa. >>
-        //1:49 Se quisermos fazer um filtro
-        [HttpPost]
+
         [Route("")]
         public async Task<ActionResult<FaseCopa>> CriaFaseCopa(
             [FromServices] DataContext context,
@@ -94,7 +88,6 @@ namespace WepApiBalta.Controllers
                 return BadRequest(new { message = "Não Foi possível atualizar a fase da copa" });
             }
         }
-
 
         [HttpDelete]
         [Route("{id:int}")]
